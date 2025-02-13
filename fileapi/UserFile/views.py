@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse, FileResponse
+from django.http import HttpRequest, HttpResponse, FileResponse, JsonResponse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -6,7 +6,7 @@ from .models import UserFile
 
 def get(request: HttpRequest):
     files = UserFile.objects.filter(user=request.user).order_by("file")
-    return [user_file.path for user_file in files]
+    return list(set([user_file.path for user_file in files]))
 
 def upload(request: HttpRequest, url: str):
     for _, file in request.FILES.items():
@@ -35,7 +35,7 @@ def downloadFile(request: HttpRequest, url: str):
         response['Content-Disposition'] = f'attachment; filename="{fileName}"'
         return response
     else:
-        return HttpResponse(status=404)
+        return JsonResponse({ 'message': 'Not found' }, status=404)
 
 
 @api_view(['DELETE'])
@@ -43,7 +43,7 @@ def downloadFile(request: HttpRequest, url: str):
 @permission_classes([IsAuthenticated])
 def deleteAllFiles(request: HttpRequest):
     deleteAll()
-    return HttpResponse("OK")
+    return JsonResponse({ 'message': 'OK' })
 
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
@@ -53,11 +53,13 @@ def file(request: HttpRequest, url: str):
         return downloadFile(request, url)
 
     upload(request, url)
-    return HttpResponse("Uploaded")
+    return JsonResponse({ 'message': 'OK' })
     
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def getFiles(request: HttpRequest):
     files = get(request)
-    return HttpResponse(files)
+    return JsonResponse({
+        'files': files
+    })
