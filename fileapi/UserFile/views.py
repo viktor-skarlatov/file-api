@@ -4,16 +4,16 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .models import UserFile
 
-def getFiles(request: HttpRequest, url: str):
+def get(request: HttpRequest):
     files = UserFile.objects.filter(user=request.user).order_by("file")
     return [user_file.path for user_file in files]
 
-def uploadFile(request: HttpRequest, url: str):
+def upload(request: HttpRequest, url: str):
     for _, file in request.FILES.items():
         userFile = UserFile(user=request.user, path=url, file=file)
         userFile.save()
 
-def deleteAllFiles():
+def deleteAll():
     user_files = UserFile.objects.all()
 
     for user_file in user_files:
@@ -21,24 +21,7 @@ def deleteAllFiles():
 
     user_files.delete()
 
-@api_view(['GET', 'POST', 'DELETE'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def files(request: HttpRequest, url: str):
-    if request.method == "POST":
-        uploadFile(request, url)
-        return HttpResponse("Uploaded")
-    elif request.method == "GET":
-        files = getFiles(request, url)
-        return HttpResponse(files)
-    elif request.method == "DELETE":
-        deleteAllFiles()
-        return HttpResponse("Files deleted")
-    
-@api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def download(request: HttpRequest, url: str):
+def downloadFile(request: HttpRequest, url: str):
     try:
         revision = int(request.GET.get('revision'))
     except:
@@ -53,3 +36,28 @@ def download(request: HttpRequest, url: str):
         return response
     else:
         return HttpResponse(status=404)
+
+
+@api_view(['DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def deleteAllFiles(request: HttpRequest):
+    deleteAll()
+    return HttpResponse("OK")
+
+@api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def file(request: HttpRequest, url: str):
+    if (request.method == 'GET'):
+        return downloadFile(request, url)
+
+    upload(request, url)
+    return HttpResponse("Uploaded")
+    
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def getFiles(request: HttpRequest):
+    files = get(request)
+    return HttpResponse(files)

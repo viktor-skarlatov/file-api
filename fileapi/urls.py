@@ -21,6 +21,13 @@ from fileapi.UserFile import views as UserFileViews
 
 urlpatterns = [
     path('login/', LoginViews.login),
-    re_path(r'^download/(?P<url>.*)/$', UserFileViews.download),
-    re_path(r'^(?P<url>.*)/$', UserFileViews.files),
+
+    # Get all files for logged in user
+    re_path('get-files', UserFileViews.getFiles),
+
+    # Used for debugging
+    re_path('delete-all-files/', UserFileViews.deleteAllFiles),
+
+    # Upload or download a file
+    re_path(r'^(?P<url>.*)/$', UserFileViews.file),
 ]

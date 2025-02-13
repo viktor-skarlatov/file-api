@@ -13,7 +13,7 @@ class UserFile(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-           last_file = UserFile.objects.filter(user=self.user).order_by("-revision").first()
+           last_file = UserFile.objects.filter(user=self.user, path=self.path).order_by("-revision").first()
            if last_file:
                self.revision = last_file.revision + 1
         super().save(*args, **kwargs)
