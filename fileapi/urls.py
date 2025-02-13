@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.urls import path, re_path
 
-from fileapi.login import views
+from fileapi.Login import views as LoginViews
+from fileapi.UserFile import views as UserFileViews
 
 urlpatterns = [
-    path('login/', views.login),
-    re_path(r'^(?P<url>.*)/$', views.files),
+    path('login/', LoginViews.login),
+    re_path(r'^download/(?P<url>.*)/$', UserFileViews.download),
+    re_path(r'^(?P<url>.*)/$', UserFileViews.files),
 ]
