@@ -13,6 +13,9 @@ class UserFile(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
+           # The orm doesn't allow more than 1 auto field
+           # so this hack is required. More info here:
+           # https://code.djangoproject.com/ticket/8576
            last_file = UserFile.objects.filter(user=self.user, path=self.path).order_by("-revision").first()
            if last_file:
                self.revision = last_file.revision + 1
