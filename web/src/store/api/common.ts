@@ -1,5 +1,5 @@
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, ResponseType } from "axios";
 import { appDispatch } from "../utils";
 import { appendErrorAction } from "../slices/commonSlice";
 import { AppState } from "../types";
@@ -18,6 +18,7 @@ interface RequestInfo {
   method?: string;
   payload?: unknown;
   contentType?: string;
+  responseType?: ResponseType;
 }
 
 function createHeaders(authToken?: string, contentType?: string) {
@@ -58,7 +59,7 @@ export const axiosBaseQueryFn: BaseQueryFn<
   unknown,
   object
 > = async (
-  { url, method = 'GET', payload, contentType },
+  { url, method = 'GET', payload, contentType, responseType },
   { getState }
 ) => {
   const state = getState() as AppState;
@@ -68,6 +69,7 @@ export const axiosBaseQueryFn: BaseQueryFn<
       method,
       data: payload,
       headers: createHeaders(state.auth.authToken, contentType),
+      responseType,
     });
   
     return {

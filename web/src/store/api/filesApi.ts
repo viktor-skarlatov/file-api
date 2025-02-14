@@ -27,6 +27,7 @@ export const filesApi = createApi({
     download: builder.query<void, string>({
       query: (url) => ({
         url,
+        responseType: 'blob',
       })
     }),
     upload: builder.mutation<void, UploadFilePayload>({

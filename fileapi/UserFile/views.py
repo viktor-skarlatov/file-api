@@ -30,10 +30,7 @@ def downloadFile(request: HttpRequest, url: str):
     userFile = UserFile.objects.filter(user=request.user, path=url, revision=revision).first()
 
     if userFile:
-        [_, fileName] = userFile.file.path.rsplit('/', 1)
-        response = FileResponse(open(userFile.file.path, 'rb'), content_type='application/octet-stream')
-        response['Content-Disposition'] = f'attachment; filename="{fileName}"'
-        return response
+        return FileResponse(open(userFile.file.path, 'rb'), as_attachment=True)
     else:
         return JsonResponse({ 'message': 'Not found' }, status=404)
 
