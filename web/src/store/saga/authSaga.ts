@@ -5,19 +5,12 @@ import { LoginFormFields } from "../../validation/loginFormSchema";
 import { appDispatch } from "../utils";
 import { UserData } from "../../models/models";
 import { authApi } from "../api/authApi";
-
-async function invokeApi(endpoint: any, payload?: unknown): Promise<unknown> {
-  const response = await appDispatch(endpoint.initiate(payload));
-  if (response.error) {
-    throw new Error(response.error)
-  }
-
-  return response.data;
-}
+import { invokeApi } from "./common";
 
 function* handleLogin(action: PayloadAction<LoginFormFields>) {
   try {
     yield put(setAuthLoadingAction(true))
+    yield appDispatch(authApi.util.resetApiState()) // We don't want cached values when logging in
     const data: UserData = yield invokeApi(authApi.endpoints.login, action.payload)
     yield put(setUserAction(data))
   } catch (err) {

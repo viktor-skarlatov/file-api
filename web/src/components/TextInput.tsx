@@ -11,7 +11,7 @@ interface Props<T extends FieldValues> extends InputProps {
   name: FieldPath<T>;
 }
 
-export function FormInput<T extends FieldValues>({ control, name, ...inputProps }: Props<T>) {
+export function TextInput<T extends FieldValues>({ control, name, ...inputProps }: Props<T>) {
   return <Controller 
     control={control}
     name={name}

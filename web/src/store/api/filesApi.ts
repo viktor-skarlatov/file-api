@@ -5,6 +5,16 @@ interface FilesResponse {
   files: string[];
 }
 
+export interface UploadFilePayload {
+  url: string;
+  file: File;
+}
+
+export interface DownloadRevisionPayload {
+  url: string;
+  revision?: string;
+}
+
 export const filesApi = createApi({
   reducerPath: 'filesApi',
   baseQuery: axiosBaseQueryFn,
@@ -14,10 +24,22 @@ export const filesApi = createApi({
         url: '/get-files',
       })
     }),
-    download: builder.query<unknown, string>({
+    download: builder.query<void, string>({
       query: (url) => ({
         url,
       })
+    }),
+    upload: builder.mutation<void, UploadFilePayload>({
+      query: (payload) => {
+        const formData = new FormData()
+        formData.append('file', payload.file)
+        return {
+          url: `${payload.url}/${payload.file.name}/`,
+          payload: formData,
+          contentType: 'multipart/form-data',
+          method: 'POST',
+        }
+      }
     }),
   })
 });
@@ -26,4 +48,4 @@ export const {
   useGetFilesQuery,
   useLazyGetFilesQuery,
   useLazyDownloadQuery,
-} =  filesApi;
+} = filesApi;

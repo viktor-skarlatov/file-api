@@ -1,20 +1,35 @@
-import { Button, Card, IconButton, LinearProgress, Link, Menu, MenuItem, Stack, styled, Typography } from "@mui/material";
-import { useGetFilesQuery, useLazyDownloadQuery } from "../store/api/filesApi";
+import {
+  Card,
+  Divider,
+  IconButton,
+  LinearProgress,
+  Menu,
+  MenuItem,
+  Stack,
+  styled,
+  Typography,
+} from "@mui/material";
+import { useGetFilesQuery } from "../store/api/filesApi";
 import { useSelector } from "react-redux";
 import { logOutAction, selectUser } from "../store/slices/authSlice";
 import { useCallback, useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import { appDispatch } from "../store/utils";
+import { DownloadButton } from "../components/DownloadButton";
+import { selectDownloadRevisionFileInfo, selectUploadDialogVisible, setUploadDialogVisibleAction } from "../store/slices/filesSlice";
+import { UploadFileDialog } from "../components/UploadFileDialog";
+import { DownloadRevisionDialog } from "../components/DownloadRevisionDialog";
 
 const FilesContainer = styled(Card)({
   minWidth: 400,
-  padding: 8
+  padding: 8,
 })
 
 export function FilesPage() {
   const user = useSelector(selectUser);
   const { data, isFetching } = useGetFilesQuery();
-  const [download] = useLazyDownloadQuery();
+  const isUploadDialogVisible = useSelector(selectUploadDialogVisible)
+  const isDownloadRevisionDialogVisible = useSelector(selectDownloadRevisionFileInfo)
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
@@ -23,42 +38,33 @@ export function FilesPage() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = useCallback(() => {
+    setAnchorEl(null)
+  }, []);
 
-  const onDownload = useCallback(async (url: string) => {
-    const data = (await download(url).unwrap()) as BlobPart;
-    const blob = new Blob([data], { type: 'application/octet-stream' })
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    const fileName = 'downloaded-doc.pdf';
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }, [download])
+  const onUpload = useCallback(() => {
+    appDispatch(setUploadDialogVisibleAction(true))
+    handleClose()
+  }, [handleClose])
 
-  const onUpload = useCallback(() => {}, [])
-  const logOut = useCallback(() => {
+  const onLogOut = useCallback(() => {
     appDispatch(logOutAction())
   }, [])
 
   return (
     <Stack gap={3}>
-      <Stack direction="row">
-        <Typography flex={1} variant="h5">Files for {user?.username}</Typography>
-        <IconButton onClick={handleClick}>
-          <MenuIcon />
-        </IconButton>
-      </Stack>
       <FilesContainer>
-        <Stack alignItems="flex-start" gap={1}>
-          {
-            data?.files?.map(url => (
-              <Link key={url} component={Button} href="#" onClick={() => onDownload(url)}>{url}</Link>
-            ))
-          }
+        <Stack gap={2}>
+          <Stack direction="row" alignItems="center">
+            <Typography ml={1} flex={1} textAlign="start" justifySelf="flex-start" variant="h5">Files for {user?.username}</Typography>
+            <IconButton onClick={handleClick}>
+              <MenuIcon />
+            </IconButton>
+          </Stack>
+          <Divider />
+          <Stack>
+            {data?.files?.map(url => <DownloadButton key={url} url={url} />)}
+          </Stack>
         </Stack>
       </FilesContainer>
       <LinearProgress variant="indeterminate" sx={{ display: isFetching ? 'block' : 'none' }} />
@@ -71,8 +77,11 @@ export function FilesPage() {
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <MenuItem onClick={onUpload}>Upload file</MenuItem>
-        <MenuItem onClick={logOut}>Logout</MenuItem>
+        <MenuItem onClick={onLogOut}>Logout</MenuItem>
       </Menu>
+
+      { isUploadDialogVisible ? <UploadFileDialog /> : null }
+      { isDownloadRevisionDialogVisible ? <DownloadRevisionDialog /> : null}
     </Stack>
   );
 }

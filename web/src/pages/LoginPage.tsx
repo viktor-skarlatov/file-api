@@ -2,7 +2,7 @@ import { Button, Card, LinearProgress, Stack, styled, Typography } from '@mui/ma
 import { useLogin } from '../hooks/useLogin'
 import { useSelector } from 'react-redux';
 import { selectAuthLoading } from '../store/slices/authSlice';
-import { FormInput } from '../components/FormInput';
+import { TextInput } from '../components/TextInput';
 
 const LoginContainer = styled(Card)({
   'minWidth': 500,
@@ -15,14 +15,16 @@ export function LoginPage() {
   return (
     <Stack>
       <LoginContainer>
-        <Stack gap={2} padding={4}>
+        <form>
+          <Stack gap={2} padding={4}>
           <Typography>File Manager</Typography>
-          <FormInput control={formControl} name="username" placeholder="Username" />
-          <FormInput control={formControl} name="password" hidden placeholder="Password" />
-          <Button variant="contained" onClick={login}>
-            Login
-          </Button>
-        </Stack>
+            <TextInput autoFocus control={formControl} name="username" placeholder="Username" />
+            <TextInput control={formControl} name="password" hidden placeholder="Password" />
+            <Button type="submit" variant="contained" onClick={login}>
+              Login
+            </Button>
+          </Stack>
+        </form>
       </LoginContainer>
       <LinearProgress variant="indeterminate" sx={{ display: isLoading ? 'block' : 'none' }} />
     </Stack>

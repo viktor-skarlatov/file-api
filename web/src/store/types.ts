@@ -12,9 +12,17 @@ export interface AuthState {
   isLoading: boolean;
 }
 
+export interface FileInfo {
+  url: string;
+}
+
 export interface FilesState {
   userFilesMap: Record<User['id'], string[]>;
   isLoading: boolean;
+
+  uploadDialogVisible: boolean;
+
+  downloadRevisionInfo?: FileInfo;
 }
 
 export interface AppState {

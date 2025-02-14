@@ -35,6 +35,21 @@ function createHeaders(authToken?: string, contentType?: string) {
   return headers;
 }
 
+const genericErrorMessage = "Something went wrong."
+
+const errorTexts: Record<number, string> = {
+  401: "Unauthorized",
+  500: genericErrorMessage,
+}
+
+function getErrorMessage(error: AxiosError) {
+  if (!error.status) {
+    return genericErrorMessage
+  }
+
+  return errorTexts[error.status] ?? error.message
+}
+
 export const axiosBaseQueryFn: BaseQueryFn<
   RequestInfo,
   unknown,
@@ -59,7 +74,7 @@ export const axiosBaseQueryFn: BaseQueryFn<
     }
   } catch (err) {
     const error = err as AxiosError;
-    appDispatch(appendErrorAction(error.message))
+    appDispatch(appendErrorAction(getErrorMessage(error)))
     return {
       error: error.message,
     }
