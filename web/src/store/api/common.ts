@@ -38,7 +38,8 @@ function createHeaders(authToken?: string, contentType?: string) {
 const genericErrorMessage = "Something went wrong."
 
 const errorTexts: Record<number, string> = {
-  401: "Unauthorized",
+  401: 'Unauthorized',
+  404: 'Not found',
   500: genericErrorMessage,
 }
 

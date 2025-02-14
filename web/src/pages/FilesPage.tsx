@@ -51,6 +51,15 @@ export function FilesPage() {
     appDispatch(logOutAction())
   }, [])
 
+  const renderFiles = () => {
+    const fileCount = data?.files?.length ?? 0
+    if (!data || fileCount === 0) {
+      return <Typography>No files uploaded yet.</Typography>
+    }
+
+    return data.files.map(url => <DownloadButton key={url} url={url} />)
+  }
+
   return (
     <Stack gap={3}>
       <FilesContainer>
@@ -63,7 +72,7 @@ export function FilesPage() {
           </Stack>
           <Divider />
           <Stack>
-            {data?.files?.map(url => <DownloadButton key={url} url={url} />)}
+            {renderFiles()}
           </Stack>
         </Stack>
       </FilesContainer>
