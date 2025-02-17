@@ -17,9 +17,9 @@ export function LoginPage() {
       <LoginContainer>
         <form>
           <Stack gap={2} padding={4}>
-          <Typography>File Manager</Typography>
+          <Typography>Cognizant File Manager Login</Typography>
             <TextInput autoFocus control={formControl} name="username" placeholder="Username" />
-            <TextInput control={formControl} name="password" hidden placeholder="Password" />
+            <TextInput type="password" control={formControl} name="password" hidden placeholder="Password" />
             <Button type="submit" variant="contained" onClick={login}>
               Login
             </Button>

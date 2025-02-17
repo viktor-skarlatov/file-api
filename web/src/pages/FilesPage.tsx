@@ -12,7 +12,7 @@ import {
 import { useGetFilesQuery } from "../store/api/filesApi";
 import { useSelector } from "react-redux";
 import { logOutAction, selectUser } from "../store/slices/authSlice";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import { appDispatch } from "../store/utils";
 import { DownloadButton } from "../components/DownloadButton";
@@ -27,9 +27,13 @@ const FilesContainer = styled(Card)({
 
 export function FilesPage() {
   const user = useSelector(selectUser);
-  const { data, isFetching } = useGetFilesQuery();
+  const { data, isFetching, refetch } = useGetFilesQuery();
   const isUploadDialogVisible = useSelector(selectUploadDialogVisible)
   const isDownloadRevisionDialogVisible = useSelector(selectDownloadRevisionFileInfo)
+
+  useEffect(() => {
+    refetch()
+  }, [user, refetch])
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
@@ -52,12 +56,12 @@ export function FilesPage() {
   }, [])
 
   const renderFiles = () => {
-    const fileCount = data?.files?.length ?? 0
+    const fileCount = data?.payload?.files?.length ?? 0
     if (!data || fileCount === 0) {
       return <Typography>No files uploaded yet.</Typography>
     }
 
-    return data.files.map(url => <DownloadButton key={url} url={url} />)
+    return data.payload.files.map(url => <DownloadButton key={url} url={url} />)
   }
 
   return (

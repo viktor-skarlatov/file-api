@@ -1,10 +1,10 @@
-from django.http import HttpRequest, HttpResponse, FileResponse, JsonResponse
+from django.http import HttpRequest, FileResponse, JsonResponse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .models import UserFile
 
-def get(request: HttpRequest):
+def get_file_list(request: HttpRequest):
     files = UserFile.objects.filter(user=request.user).order_by("file")
     return list(set([user_file.path for user_file in files]))
 
@@ -13,7 +13,7 @@ def upload(request: HttpRequest, url: str):
         userFile = UserFile(user=request.user, path=url, file=file)
         userFile.save()
 
-def deleteAll():
+def delete_all():
     user_files = UserFile.objects.all()
 
     for user_file in user_files:
@@ -21,7 +21,7 @@ def deleteAll():
 
     user_files.delete()
 
-def downloadFile(request: HttpRequest, url: str):
+def download_file(request: HttpRequest, url: str):
     try:
         revision = int(request.GET.get('revision'))
     except:
@@ -30,24 +30,17 @@ def downloadFile(request: HttpRequest, url: str):
     userFile = UserFile.objects.filter(user=request.user, path=url, revision=revision).first()
 
     if userFile:
-        return FileResponse(open(userFile.file.path, 'rb'), as_attachment=True)
+        response = FileResponse(open(userFile.file.path, 'rb'), as_attachment=True)
+        return response
     else:
         return JsonResponse({ 'message': 'Not found' }, status=404)
-
-
-@api_view(['DELETE'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def deleteAllFiles(request: HttpRequest):
-    deleteAll()
-    return JsonResponse({ 'message': 'OK' })
 
 @api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def file(request: HttpRequest, url: str):
     if (request.method == 'GET'):
-        return downloadFile(request, url)
+        return download_file(request, url)
 
     upload(request, url)
     return JsonResponse({ 'message': 'OK' })
@@ -55,8 +48,13 @@ def file(request: HttpRequest, url: str):
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def getFiles(request: HttpRequest):
-    files = get(request)
+def get_files(request: HttpRequest):
+    files = get_file_list(request)
     return JsonResponse({
         'files': files
     })
+
+@api_view(['DELETE'])
+def delete_all_files(request: HttpRequest):
+    delete_all()
+    return JsonResponse({ 'message': 'OK' })

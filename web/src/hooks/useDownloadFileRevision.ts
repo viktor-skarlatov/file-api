@@ -12,7 +12,7 @@ export function useDownloadFileRevision() {
   const { handleSubmit, control } = useForm({
     resolver: yupResolver(DownloadFileRevisionFormSchema),
     defaultValues: {
-      revision: '',
+      revision: 1,
     }
   })
 

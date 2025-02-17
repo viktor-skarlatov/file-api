@@ -1,5 +1,5 @@
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
-import axios, { AxiosError, ResponseType } from "axios";
+import axios, { AxiosError, AxiosResponseHeaders, ResponseType } from "axios";
 import { appDispatch } from "../utils";
 import { appendErrorAction } from "../slices/commonSlice";
 import { AppState } from "../types";
@@ -12,6 +12,12 @@ const axiosInstance = axios.create({
     return status >= 200 && status < 300;
   },
 });
+
+export interface ApiResponse<T> {
+  payload: T;
+  headers: AxiosResponseHeaders;
+  error?: string;
+}
 
 interface RequestInfo {
   url: string;
@@ -73,7 +79,10 @@ export const axiosBaseQueryFn: BaseQueryFn<
     });
   
     return {
-      data: response.data
+      data: {
+        headers: response.headers,
+        payload: response.data,
+      },
     }
   } catch (err) {
     const error = err as AxiosError;

@@ -1,16 +1,21 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
+seedPassword = 'pass123'
+
 class Command(BaseCommand):
     help = 'Seeds the database with one test user'
 
     def handle(self, *args, **kwargs):
-        if not User.objects.filter(username='testuser').exists():
-            user = User.objects.create_user(
-                username='skarlatov',
-                password='pass123',
-                email='viktor.skarlatov@gmail.com'
+        if not User.objects.filter(username='user1').exists():
+            User.objects.create_user(
+                username='user1',
+                password=seedPassword
             )
-            self.stdout.write(self.style.SUCCESS(f"Test user '{user.username}' created successfully!"))
-        else:
-            self.stdout.write(self.style.SUCCESS("Test user already exists!"))
+
+        if not User.objects.filter(username='user2').exists():
+            User.objects.create_user(
+                username='user2',
+                password=seedPassword
+            )
+        

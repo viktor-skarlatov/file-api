@@ -16,17 +16,17 @@ Including another URLconf
 """
 from django.urls import path, re_path
 
-from fileapi.Login import views as LoginViews
-from fileapi.UserFile import views as UserFileViews
+from fileapi.login import views as LoginViews
+from fileapi.user_file import views as UserFileViews
 
 urlpatterns = [
     path('login/', LoginViews.login),
 
     # Get all files for logged in user
-    re_path('get-files', UserFileViews.getFiles),
+    path('get-files', UserFileViews.get_files),
 
     # Used for debugging
-    re_path('delete-all-files/', UserFileViews.deleteAllFiles),
+    path('delete-all-files/', UserFileViews.delete_all_files),
 
     # Upload or download a file
     re_path(r'^(?P<url>.*)/$', UserFileViews.file),
