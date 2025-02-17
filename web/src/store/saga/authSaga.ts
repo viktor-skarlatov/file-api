@@ -6,12 +6,14 @@ import { appDispatch } from "../utils";
 import { UserData } from "../../models/models";
 import { authApi } from "../api/authApi";
 import { invokeApi } from "./common";
+import { filesApi } from "../api/filesApi";
 
 function* handleLogin(action: PayloadAction<LoginFormFields>) {
   try {
     yield put(setAuthLoadingAction(true))
     yield appDispatch(authApi.util.resetApiState()) // We don't want cached values when logging in
     const data: UserData = yield invokeApi(authApi.endpoints.login, action.payload)
+    filesApi.util.resetApiState()
     yield put(setUserAction(data))
   } catch (err) {
     console.error(err)

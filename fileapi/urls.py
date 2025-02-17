@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.urls import path, re_path
 
-from fileapi.Login import views as LoginViews
-from fileapi.UserFile import views as UserFileViews
+from fileapi.login import views as LoginViews
+from fileapi.user_file import views as UserFileViews
 
 urlpatterns = [
     path('login/', LoginViews.login),
