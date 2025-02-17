@@ -1,7 +1,7 @@
 # Requirements
-- Mac/Linux or Windows with [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+- Mac/Linux/Windows
 - Node 20
-- yarn
+- yarn 1.22
 - Python 3
 
 ### Backend Setup
