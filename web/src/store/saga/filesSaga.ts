@@ -10,15 +10,15 @@ import {
   uploadFileAction,
 } from "../slices/filesSlice";
 import { appDispatch } from "../utils";
+import { ApiResponse } from "../api/common";
 
 function* downloadFromUrl(url: string) {
   try {
     yield put(setFilesLoadingAction(true))
-    const data: BlobPart = yield invokeApi(filesApi.endpoints.download, url)
-    const blob = new Blob([data], { type: 'application/octet-stream' })
+    const response: ApiResponse<Blob> = yield invokeApi(filesApi.endpoints.download, url)
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    const fileName = 'downloaded-doc.pdf';
+    link.href = URL.createObjectURL(response.payload);
+    const fileName = url.substring(url.lastIndexOf('/') + 1);
     link.download = fileName;
     document.body.appendChild(link);
     link.click();

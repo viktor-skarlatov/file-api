@@ -56,12 +56,12 @@ export function FilesPage() {
   }, [])
 
   const renderFiles = () => {
-    const fileCount = data?.files?.length ?? 0
+    const fileCount = data?.payload?.files?.length ?? 0
     if (!data || fileCount === 0) {
       return <Typography>No files uploaded yet.</Typography>
     }
 
-    return data.files.map(url => <DownloadButton key={url} url={url} />)
+    return data.payload.files.map(url => <DownloadButton key={url} url={url} />)
   }
 
   return (

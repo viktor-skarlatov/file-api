@@ -23,10 +23,10 @@ urlpatterns = [
     path('login/', LoginViews.login),
 
     # Get all files for logged in user
-    re_path('get-files', UserFileViews.getFiles),
+    path('get-files', UserFileViews.get_files),
 
     # Used for debugging
-    re_path('delete-all-files/', UserFileViews.deleteAllFiles),
+    path('delete-all-files/', UserFileViews.delete_all_files),
 
     # Upload or download a file
     re_path(r'^(?P<url>.*)/$', UserFileViews.file),

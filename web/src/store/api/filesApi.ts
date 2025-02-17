@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { axiosBaseQueryFn } from "./common";
+import { ApiResponse, axiosBaseQueryFn } from "./common";
 
 interface FilesResponse {
   files: string[];
@@ -12,14 +12,14 @@ export interface UploadFilePayload {
 
 export interface DownloadRevisionPayload {
   url: string;
-  revision?: string;
+  revision?: number;
 }
 
 export const filesApi = createApi({
   reducerPath: 'filesApi',
   baseQuery: axiosBaseQueryFn,
   endpoints: builder => ({
-    getFiles: builder.query<FilesResponse, void>({
+    getFiles: builder.query<ApiResponse<FilesResponse>, void>({
       query: () => ({
         url: '/get-files',
       })
