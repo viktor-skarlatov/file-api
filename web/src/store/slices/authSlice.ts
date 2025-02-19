@@ -3,10 +3,10 @@ import { AppState, AuthState } from "../types";
 import { LoginFormFields } from "../../validation/loginFormSchema";
 import { UserData } from "../../models/models";
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   isLoading: false,
 }
-const userSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -25,11 +25,9 @@ const userSlice = createSlice({
   },
 })
 
-export const {loginAction, logOutAction, setUserAction, setAuthLoadingAction} = userSlice.actions
-
 const selectAuthState = (state: AppState) => state.auth;
 
 export const selectUser = createSelector(selectAuthState, (state) => state.user)
 export const selectAuthLoading = createSelector(selectAuthState, (state) => state.isLoading)
 
-export default userSlice.reducer
+export default authSlice

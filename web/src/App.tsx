@@ -1,9 +1,13 @@
 import './App.css'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider as ReduxProvider } from 'react-redux';
-import { persistor, store } from './store/store'
 import { AuthGuard } from './components/AuthGuard';
 import { ErrorDialog } from './components/ErrorDialog';
+import { createStore } from './store/store';
+import { storeUtils } from './store/utils';
+
+const { store, persistor } = createStore()
+storeUtils.appDispatch = store.dispatch;
 
 function App() {
   return (

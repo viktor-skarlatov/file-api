@@ -17,8 +17,10 @@ export function TextInput<T extends FieldValues>({ control, name, ...inputProps 
     name={name}
     render={({field: { value, onChange }, fieldState: { error } }) => (
       <Stack gap={1}>
-        <Input {...inputProps} value={value} onChange={onChange} />
-        <ErrorText color="error">{error?.message}</ErrorText>
+        <Input inputProps={{
+          'data-testid': `input-${name}` 
+        }} {...inputProps} value={value} onChange={onChange} />
+        <ErrorText data-testid={`input-${name}-error`} role="" color="error">{error?.message}</ErrorText>
       </Stack>
     )}
   />

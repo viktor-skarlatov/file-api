@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useCallback, useMemo } from 'react';
 import { LoginFormFields, LoginFormSchema } from '../validation/loginFormSchema';
-import { loginAction } from '../store/slices/authSlice';
+import { loginAction } from '../store/slices/authActions';
 import { appDispatch } from '../store/utils';
 
 export function useLogin() {

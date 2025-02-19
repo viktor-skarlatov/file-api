@@ -18,8 +18,16 @@ function* downloadFromUrl(url: string) {
     const response: ApiResponse<Blob> = yield invokeApi(filesApi.endpoints.download, url)
     const link = document.createElement("a");
     link.href = URL.createObjectURL(response.payload);
-    const fileName = url.substring(url.lastIndexOf('/') + 1);
-    link.download = fileName;
+    const queryString = url.substring(url.indexOf('?') + 1)
+    const params = new URLSearchParams(queryString)
+    const revision = params.get('revision')
+    let urlWithoutQuery = url
+    if (revision) {
+      urlWithoutQuery = url.substring(0, url.indexOf('?'))
+    }
+
+    const fileName = urlWithoutQuery.substring(urlWithoutQuery.lastIndexOf('/') + 1);
+    link.download = revision ? `revision_${revision}_${fileName}` : fileName;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

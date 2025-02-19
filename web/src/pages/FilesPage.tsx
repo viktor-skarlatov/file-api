@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useGetFilesQuery } from "../store/api/filesApi";
 import { useSelector } from "react-redux";
-import { logOutAction, selectUser } from "../store/slices/authSlice";
+import { logOutAction } from "../store/slices/authActions";
 import { useCallback, useEffect, useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import { appDispatch } from "../store/utils";
@@ -19,6 +19,7 @@ import { DownloadButton } from "../components/DownloadButton";
 import { selectDownloadRevisionFileInfo, selectUploadDialogVisible, setUploadDialogVisibleAction } from "../store/slices/filesSlice";
 import { UploadFileDialog } from "../components/UploadFileDialog";
 import { DownloadRevisionDialog } from "../components/DownloadRevisionDialog";
+import { selectUser } from "../store/slices/authSlice";
 
 const FilesContainer = styled(Card)({
   minWidth: 400,

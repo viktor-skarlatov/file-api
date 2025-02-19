@@ -13,25 +13,25 @@ class TestUserFileView(TestCase):
         self.client = APIClient()
         self.user = User.objects.create_user(username='user1', password=password)
 
-    # GET FILE LIST
     def test_get_files_unauthorized(self):
         response = self.client.get(reverse(UserFileViews.get_files))
         self.assertEqual(response.status_code, 401)
 
-    def test_get_files_method_not_allowed(self):
+    def test_get_files_http_method(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.post(reverse(UserFileViews.get_files))
-        self.assertEqual(response.status_code, 405)
+        test_cases = [
+            ("get", 200),
+            ("post", 405),
+            ("put", 405),
+            ("delete", 405),
+            ("patch", 405),
+        ]
 
-        response = self.client.put(reverse(UserFileViews.get_files))
-        self.assertEqual(response.status_code, 405)
-
-        response = self.client.patch(reverse(UserFileViews.get_files))
-        self.assertEqual(response.status_code, 405)
-
-        response = self.client.delete(reverse(UserFileViews.get_files))
-        self.assertEqual(response.status_code, 405)
+        for method, expected_status in test_cases:
+            with self.subTest(method=method, status=expected_status):
+                response = getattr(self.client, method)(reverse(UserFileViews.get_files))
+                self.assertEqual(response.status_code, expected_status)
     
     def test_get_file(self):
         file = UserFile(path=file_path, user=self.user)
@@ -46,7 +46,7 @@ class TestUserFileView(TestCase):
         self.assertEqual(len(fileList), 1)
         self.assertEqual(fileList[0], file_path)
 
-    def test_get_multiple_revisions(self):
+    def test_multiple_revisions(self):
         file = UserFile(path=file_path, user=self.user)
         file.save()
 
@@ -62,7 +62,7 @@ class TestUserFileView(TestCase):
         self.assertEqual(len(fileList), 1)
         self.assertEqual(fileList[0], file_path)
 
-    def test_get_different_files(self):
+    def test_different_files(self):
         file = UserFile(path=file_path, user=self.user)
         file.save()
 

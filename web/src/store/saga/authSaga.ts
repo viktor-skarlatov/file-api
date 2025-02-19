@@ -1,5 +1,5 @@
 import { put, takeLatest } from "redux-saga/effects";
-import { loginAction, setAuthLoadingAction, setUserAction } from "../slices/authSlice";
+import { loginAction, setAuthLoadingAction, setUserAction } from "../slices/authActions";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginFormFields } from "../../validation/loginFormSchema";
 import { appDispatch } from "../utils";

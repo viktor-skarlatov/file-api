@@ -15,16 +15,14 @@ export function LoginPage() {
   return (
     <Stack>
       <LoginContainer>
-        <form>
-          <Stack gap={2} padding={4}>
-          <Typography>Cognizant File Manager Login</Typography>
-            <TextInput autoFocus control={formControl} name="username" placeholder="Username" />
-            <TextInput type="password" control={formControl} name="password" hidden placeholder="Password" />
-            <Button type="submit" variant="contained" onClick={login}>
-              Login
-            </Button>
-          </Stack>
-        </form>
+        <Stack gap={2} padding={4}>
+        <Typography>Cognizant File Manager Login</Typography>
+          <TextInput autoFocus control={formControl} name="username" placeholder="Username" />
+          <TextInput type="password" control={formControl} name="password" hidden placeholder="Password" />
+          <Button data-testid="login-button" variant="contained" onClick={login}>
+            Login
+          </Button>
+        </Stack>
       </LoginContainer>
       <LinearProgress variant="indeterminate" sx={{ display: isLoading ? 'block' : 'none' }} />
     </Stack>
