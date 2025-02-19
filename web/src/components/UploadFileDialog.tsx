@@ -1,7 +1,7 @@
 import { Button, Card, Divider, Modal, Stack, styled, Typography } from "@mui/material";
 import { useCallback } from "react";
 import { appDispatch } from "../store/utils";
-import { setUploadDialogVisibleAction } from "../store/slices/filesSlice";
+import { setUploadDialogVisibleAction } from "../store/slices/fileActions";
 import { TextInput } from "./TextInput";
 import { useFileUpload } from "../hooks/useFileUpload";
 import { FileInput } from "./FileInput";

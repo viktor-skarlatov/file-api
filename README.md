@@ -20,3 +20,8 @@
 
 ### Notes
 Please note that the api and web projects do not have extensive unit tests because this is a demo project. The tests that are added just showcase the way I write tests.
+
+### Known Issue
+When the user uploads a file rtk query immediately tries to refetch the list of files but the
+Django api returns the old list. There is some delay possibly file system related that causes
+this. If the user refreshes the page it shows correctly.

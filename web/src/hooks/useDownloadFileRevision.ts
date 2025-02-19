@@ -1,10 +1,11 @@
 import { useCallback } from "react"
-import { appDispatch } from "../store/utils"
-import { downloadFileAction, selectDownloadRevisionFileInfo } from "../store/slices/filesSlice"
+import { useSelector } from "react-redux"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { appDispatch } from "../store/utils"
+import { selectDownloadRevisionFileInfo } from "../store/slices/fileSelectors"
 import { DownloadFileRevisionFormFields, DownloadFileRevisionFormSchema } from "../validation/downloadFileRevisionFormSchema"
-import { useSelector } from "react-redux"
+import { downloadFileAction } from "../store/slices/fileActions"
 
 export function useDownloadFileRevision() {
   const fileInfo = useSelector(selectDownloadRevisionFileInfo)

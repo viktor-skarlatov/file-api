@@ -1,9 +1,9 @@
 import { useCallback } from "react"
 import { appDispatch } from "../store/utils"
-import { uploadFileAction } from "../store/slices/filesSlice"
 import { UploadFormFields, UploadFormSchema } from "../validation/uploadFormSchema"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { uploadFileAction } from "../store/slices/fileActions"
 
 export function useFileUpload() {
   const { handleSubmit, control } = useForm({

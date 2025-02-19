@@ -8,7 +8,7 @@ import {
   setFilesLoadingAction,
   setUploadDialogVisibleAction,
   uploadFileAction,
-} from "../slices/filesSlice";
+} from "../slices/fileActions";
 import { appDispatch } from "../utils";
 import { ApiResponse } from "../api/common";
 

@@ -2,7 +2,7 @@ import { Box, Button, IconButton, Menu, MenuItem, Stack } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useCallback, useState } from "react";
 import { appDispatch } from "../store/utils";
-import { downloadFileAction, setDownloadRevisionInfoAction } from "../store/slices/filesSlice";
+import { downloadFileAction, setDownloadRevisionInfoAction } from "../store/slices/fileActions";
 
 interface Props {
   url: string;

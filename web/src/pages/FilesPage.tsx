@@ -16,10 +16,11 @@ import { useCallback, useEffect, useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import { appDispatch } from "../store/utils";
 import { DownloadButton } from "../components/DownloadButton";
-import { selectDownloadRevisionFileInfo, selectUploadDialogVisible, setUploadDialogVisibleAction } from "../store/slices/filesSlice";
+import { selectDownloadRevisionFileInfo, selectUploadDialogVisible } from "../store/slices/fileSelectors";
 import { UploadFileDialog } from "../components/UploadFileDialog";
 import { DownloadRevisionDialog } from "../components/DownloadRevisionDialog";
 import { selectUser } from "../store/slices/authSlice";
+import { setUploadDialogVisibleAction } from "../store/slices/fileActions";
 
 const FilesContainer = styled(Card)({
   minWidth: 400,

@@ -1,5 +1,5 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppState, FileInfo, FilesState } from "../types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { FileInfo, FilesState } from "../types";
 import { DownloadRevisionPayload, UploadFilePayload } from "../api/filesApi";
 
 const initialState: FilesState = {
@@ -27,17 +27,5 @@ const fileSlice = createSlice({
   },
 })
 
-export const {
-  getFilesAction,
-  uploadFileAction,
-  downloadFileAction,
-  setFilesLoadingAction,
-  setUploadDialogVisibleAction,
-  setDownloadRevisionInfoAction,
-} = fileSlice.actions
-export default fileSlice.reducer
 
-const selectFilesState = (state: AppState) => state.files
-
-export const selectUploadDialogVisible = createSelector(selectFilesState, state => state.uploadDialogVisible)
-export const selectDownloadRevisionFileInfo = createSelector(selectFilesState, state => state.downloadRevisionInfo)
+export default fileSlice

@@ -1,25 +1,16 @@
 import '@testing-library/jest-dom';
 
-import { screen, render as testRender, fireEvent, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { createStore } from '../store/store';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { LoginPage } from './LoginPage';
 import { loginAction } from '../store/slices/authActions';
 import { storeUtils } from '../store/utils';
+import { render } from '../tests/utils';
 
 storeUtils.appDispatch = jest.fn()
 
 jest.mock('../store/slices/authActions', () => ({
   loginAction: jest.fn(),
 }));
-
-const render = (component: React.ReactElement) => {
-  const { store } = createStore(false)
-
-  return testRender(
-    <Provider store={store}>{component}</Provider>
-  );
-};
 
 describe('LoginPage', () => {
   test('Incorrect inputs', async () => {

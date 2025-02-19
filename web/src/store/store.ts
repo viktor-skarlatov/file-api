@@ -21,7 +21,7 @@ export const createStore = (runSaga: boolean = true) => {
     persistConfig,
     combineReducers({
       auth: authSlice.reducer,
-      files: filesReducer,
+      files: filesReducer.reducer,
       common: commonReducer,
       [authApi.reducerPath]: authApi.reducer,
       [filesApi.reducerPath]: filesApi.reducer,
