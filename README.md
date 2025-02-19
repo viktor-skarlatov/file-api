@@ -9,7 +9,7 @@
 - Activate python venv: `source ~/skarlatov-venv/bin/activate`
 - Install python dependencies: `python -m pip install -r requirements.txt`
 - Run the migrations: `python manage.py migrate`
-- Seed databse with test users: `python manage.py seed_db` (available users are "user1" and "user2", password for both is "pass123")
+- Seed the database with test users: `python manage.py seed_db` (available users are "user1" and "user2", password for both is "pass123")
 - Run the tests: `python manage.py test fileapi.test_all`
 - Start the server: `python manage.py runserver`
 
